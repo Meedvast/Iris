@@ -157,6 +157,23 @@ int cmp(const void *d1, const void *d2)
     Distance D2 = *(Distance *)d2;
     return D1.value > D2.value ? 1 : -1;
 }
+void Sort(Distance d1[],int num)
+{
+    int i,j;
+    Distance temp;
+    for(i=0;i<num;i++)
+    {
+        for(j=num-1;j>i;j--)
+        {
+            if(d1[j].value<d1[j-1].value)
+            {
+                temp=d1[j];
+                d1[j]=d1[j-1];
+                d1[j-1]=temp;
+            }
+        }
+    }
+}
 void printResult(int k, int count)
 {
     int i;
@@ -195,7 +212,8 @@ int main()
                 distance[j].clusterID = trainSet[j].clusterID;
             }
             /* 用qsort函数从小到大排序(距离,训练集标签) */
-            qsort(distance, TRAIN_SIZE, sizeof(distance[0]), cmp);
+            //qsort(distance, TRAIN_SIZE, sizeof(distance[0]), cmp);
+            Sort(distance,TRAIN_SIZE);
             /* 统计与测试集标签距离最邻近的k个标签出现的频数 并返回频数最后高标签 即预测的标签 */
             forecastSet[i].clusterID = countID(&count, k, testSet[i].clusterID);
         }
